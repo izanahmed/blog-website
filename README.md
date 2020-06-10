@@ -1,1 +1,1 @@
-Django Blog Website
+Daily Fashion Blog (Django)

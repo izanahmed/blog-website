@@ -1,5 +1,5 @@
 body {
-  background: #fafafa;
+  background: #FFF0F5;
   color: #333333;
   margin-top: 5rem;
 }
@@ -27,6 +27,7 @@ ul {
 .site-header .navbar-nav .nav-link.active {
   font-weight: 500;
 }
+
 i {
   padding: 1px;
 }

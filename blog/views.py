@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Post
-#from django.http import HttpResponse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post, Like
+from django.http import HttpResponse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
@@ -33,9 +33,35 @@ class UserPostListView(ListView):
 		return Post.objects.filter(author=user).order_by('-date_posted')
 
 #comment added for checking git
-
 class PostDetailView(DetailView):
 	model = Post
+
+class LikeView(LoginRequiredMixin, View):
+	login_url = ''
+	redirect_field_name=''
+
+	def post(self, *args, **kwargs):
+		user = self.request.user
+		pk = self.kwargs.get('pk')
+		post_obj = Post.objects.get(id=pk)
+	
+		if user in post_obj.likes.all():
+			post_obj.likes.remove(user)
+		else:
+			post_obj.likes.add(user)
+			
+		like, created = Like.objects.get_or_create(user=user,post_id=pk)
+		if not created:
+			if like.value == 'Like':
+				like.value = 'Unlike'
+			else:
+				like.value = 'Like'
+		like.save()
+				
+		return redirect(self.request.META.get('HTTP_REFERER'))
+
+
+
 
 class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 	model = Post

@@ -6,6 +6,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.urls import reverse
 # Create your views here.
 
 
@@ -58,7 +59,7 @@ class LikeView(LoginRequiredMixin, View):
 				like.value = 'Like'
 		like.save()
 				
-		return redirect(self.request.META.get('HTTP_REFERER'))
+		return redirect(reverse('post-detail', args=[pk])) #self.request.META.get('HTTP_REFERER'))
 
 
 

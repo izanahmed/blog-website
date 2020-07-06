@@ -1,4 +1,4 @@
-# Daily Fashion Blog (Django)
+# Daily Fashion Blog (Using Django)
 
 Users can create, read, update and delete posts. 
 
